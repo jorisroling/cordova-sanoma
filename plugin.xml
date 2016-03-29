@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin id="com.bonboa.sanoma" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>CordovaSanoma</name>
+    <description>Sanoma Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>Login,Sanoma</keywords>
+    <repo>https://github.com/platanus/cordova-sanoma.git</repo>
+    <issue>https://github.com/platanus/cordova-sanoma/issues</issue>
+
+  <js-module name="CordovaSanoma" src="www/CordovaSanoma.js">
+    <clobbers target="cordova.plugins.CordovaSanoma" />
+  </js-module>
+
+  <!-- android -->
+  <platform name="android">
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="CordovaSanoma">
+        <param name="android-package" value="com.bonboa.sanoma.CordovaSanoma" />
+        <param name="onload" value="true" />
+      </feature>
+    </config-file>
+
+    <config-file target="res/values/strings.xml" parent="/*">
+      <string name="facebook_app_id">$FB_APP_ID</string>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.INTERNET">
+      </uses-permission>
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE">
+      </uses-permission>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/*/application">
+      <activity android:label="@string/app_name" android:name="com.facebook.LoginActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+      <activity
+        android:name="com.sanoma.socialize.android.ui.HostActivity"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+      <activity
+        android:name="com.sanoma.socialize.android.login.providers.WebLoginActivity"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:launchMode="singleTask"
+        android:allowTaskReparenting="true" >
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="$PACKAGE_NAME" android:host="gsapi" />
+        </intent-filter>
+      </activity>
+      <activity android:name="com.facebook.LoginActivity"/>
+      <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+    </config-file>
+
+    <source-file src="src/android/CordovaSanoma.java" target-dir="src/us/platan/sanoma" />
+    <source-file src="src/android/sanoma-sdk-3.1.2.jar" target-dir="libs" />
+
+  </platform>
+
+  <!-- ios -->
+  <platform name="ios">
+
+    <preference name="FB_APP_ID" />
+    <preference name="FB_APP_NAME" />
+
+    <config-file parent="/*" target="config.xml">
+      <feature name="CordovaSanoma">
+        <param name="ios-package" value="CordovaSanoma" />
+		<param name="onload" value="true" />
+      </feature>
+    </config-file>
+
+    <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+      <array>
+        <dict>
+          <key>CFBundleTypeRole</key>
+          <string>Editor</string>
+          <key>CFBundleURLName</key>
+          <string>$PACKAGE_NAME</string>
+          <key>CFBundleURLSchemes</key>
+          <array>
+            <string>$PACKAGE_NAME</string>
+          </array>
+        </dict>
+        <dict>
+          <key>CFBundleURLSchemes</key>
+          <array>
+            <string>fb$FB_APP_ID</string>
+          </array>
+        </dict>
+      </array>
+    </config-file>
+
+    <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+		<array>
+			<string>fbapi</string>
+			<string>fb</string>
+			<string>fb-messenger-api</string>
+			<string>fbauth2</string>
+			<string>fbshareextension</string>
+		</array>
+    </config-file>
+
+    <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
+		<dict>
+		  <key>NSExceptionDomains</key>
+		  <dict>
+		    <key>facebook.com</key>
+		    <dict>
+		      <key>NSIncludesSubdomains</key> <true/>        
+		      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key> <false/>
+		    </dict>
+		    <key>fbcdn.net</key>
+		    <dict>
+		      <key>NSIncludesSubdomains</key> <true/>
+		      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>  <false/>
+		    </dict>
+		    <key>akamaihd.net</key>
+		    <dict>
+		      <key>NSIncludesSubdomains</key> <true/>
+		      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key> <false/>
+		    </dict>
+		  </dict>
+		</dict>	
+    </config-file>
+	
+	
+    <config-file target="*-Info.plist" parent="FacebookAppID">
+      <string>$FB_APP_ID</string>
+    </config-file>
+
+    <config-file target="*-Info.plist" parent="FacebookDisplayName">
+      <string>$FB_APP_NAME</string>
+    </config-file>
+
+    <source-file src="src/ios/CordovaSanoma.m" />
+
+	<framework src="AVFoundation.framework" />
+	<framework src="CoreMedia.framework" />
+	<framework src="SystemConfiguration.framework" />
+	<framework src="MediaPlayer.framework" />
+	<framework src="AdSupport.framework" />
+	<framework src="CoreData.framework" />
+	
+	<framework src="libsqlite3.tbd" />
+	<framework src="libz.tbd" />
+	
+
+	
+
+	<!-- Generated by list.js on 18-01-2016 -->
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_AppConfig/SKAppConfig.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_AppConfig/SKAppConfigResponse.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_AppConfig/libSanomaKit_AppConfig.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_AppReview/SKAppReviewConfig.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_AppReview/SKAppReviewView.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_AppReview/SKAppReviewViewConfig.h" />
+	<resource-file src="src/ios/SanomaKitLib/SanomaKit_AppReview/SanomaKitAppReviewResource.bundle" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_AppReview/libSanomaKit_AppReview.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_ComScore/SKAnalyticsBackendComScore.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_ComScore/libSanomaKit_ComScore.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_FirstUseExperience/SKFirstUseExperience.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_FirstUseExperience/SKFirstUseExperienceDefaultViewController.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_FirstUseExperience/SKFirstUseExperienceViewController.h" />
+	<resource-file src="src/ios/SanomaKitLib/SanomaKit_FirstUseExperience/SanomaKitFUEResource.bundle" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_FirstUseExperience/libSanomaKit_FirstUseExperience.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_GoogleAnalytics/SKAnalyticsBackendGoogleAnalytics.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_GoogleAnalytics/SKAnalyticsBackendGoogleTagManager.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_GoogleAnalytics/libSanomaKit_GoogleAnalytics.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Insight/SKAnalyticsBackendInsight.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_Insight/libSanomaKit_Insight.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/NSString+SKAnalytics.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKAccount.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKAnalytics.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKAnalyticsAction.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKAnalyticsAdInfo.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKAnalyticsBackend.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKAnalyticsEvent.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKLocation.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKLocationMonitor.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Core/SKNetworkUrlConnection.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_Core/libSanomaKit_Core.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Krux/SKAnalyticsBackendKrux.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_Krux/libSanomaKit_Krux.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSAttributedString+SKFactory.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSAttributedString+SKReplaceString.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSAttributedString+SKSizeMeasurement.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSBundle+SanomaKit.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSData+SKHex.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSDate+SKComponents.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSDate+SKDateWithString.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSDate+SKDays.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSDate+SKFormat.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSDictionary+SKNilSafe.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSError+SKFactory.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSError+SKLog.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSString+SKCheckForEnglishAlphabet.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSString+SKMD5Hash.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSString+SKRemoveExtraWhiteSpaces.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/NSThread+SKPerformBlock.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKAlertView.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKAlertViewItem.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKAppInformation.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKDictionary.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKFonts.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKLocalNotificationManager.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKLogPresenter.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKNetworkLogger.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKPathUtilities.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKRemoteNotificationManager.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKSystemInformation.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKUserDefaults.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SKVersionNumber.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/SanomaKit.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIColor+SKHexString.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIColor+SKImage.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIDevice+SKHardwareName.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIImage+SKCrop.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIImage+SKGrayScale.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIImage+SKPixelColors.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIImage+SKScale.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIImage+SKTint.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIView+SKConstraints.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/UIView+SKImage.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_Helpers/libSanomaKit_Helpers.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SAC/SKAnalyticsBackendSAC.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_SAC/libSanomaKit_SAC.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Spring/SKAnalyticsBackendSpring.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Spring/Spring.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_Spring/libSanomaKit_Spring.a" framework="true" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Base64Transcoder.c" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Base64Transcoder.h" />
+	<resource-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/FacebookSDKStrings.bundle" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSAccount.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSAccountsDelegate.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSFacebookProvider.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSGigyaSafariProvider.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSGigyaWebViewProvider.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSGooglePlusProvider.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSJSONCollection.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSLogger.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSLoginManager.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSLoginProvider.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSLoginRequest.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSMBProgressHUD.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSNativeLoginProvider.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSObject+Internal.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSObject.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSPluginView.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSPluginViewController.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSProviderSelectionViewController.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSRequest.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSResponse.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSSession.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSSessionDelegate.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSSocializeDelegate.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSTwitterProvider.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSUser.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSWebBridge+Internal.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSWebBridge.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSWebBridgeManager.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/GSWebViewController.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Gigya+Internal.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Gigya.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/IDTwitterAccountChooserViewController.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/NSArray+GSArray.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/NSData+GSBase64.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/NSDictionary+GSDictionary.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/NSError+GSError.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/NSString+GSString.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/NSURL+GSURL.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SKAccountAPIManager.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SKAccountManager.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SKAccountUtils.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SKGigyaAccountManager.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SKGigyaAccountUtils.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SKGigyaLoginViewController.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SKGigyaUser.h" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SKUserProfile.h" />
+	<resource-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/SanomaKitAccountResource.bundle" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/UIView+GSView.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/libSanomaKit_SanomaAccount.a" framework="true" />
+	<header-file src="src/ios/SanomaKitLib/SanomaKit_Update/SKUpdate.h" />
+	<source-file src="src/ios/SanomaKitLib/SanomaKit_Update/libSanomaKit_Update.a" framework="true" />
+	<framework src="src/ios/SanomaKitLib/SanomaKit_Krux/Krux/KruxADM.framework" custom="true" />
+	<framework src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Facebook/Bolts.framework" custom="true" />
+	<framework src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Facebook/FBAudienceNetwork.framework" custom="true" />
+	<framework src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Facebook/FBSDKCoreKit.framework" custom="true" />
+	<framework src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Facebook/FBSDKLoginKit.framework" custom="true" />
+	<framework src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Facebook/FBSDKMessengerShareKit.framework" custom="true" />
+	<framework src="src/ios/SanomaKitLib/SanomaKit_SanomaAccount/Facebook/FBSDKShareKit.framework" custom="true" />
+
+  </platform>
+
+</plugin>
